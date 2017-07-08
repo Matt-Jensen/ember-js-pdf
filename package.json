@@ -1,17 +1,20 @@
 {
   "name": "ember-js-pdf",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Client-side JavaScript PDF generation for Embereños.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "pdf",
+    "client-side",
+    "browser",
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Matt-Jensen",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/Matt-Jensen/ember-js-pdf",
   "scripts": {
     "build": "ember build",
     "start": "ember server",
