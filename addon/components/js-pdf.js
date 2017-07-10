@@ -107,7 +107,7 @@ export default JsPdfComponent.reopenClass({
 function addStepsToJsPdf(pdf, steps = []) {
   for (let i = 0; i < steps.length; i++) {
     keys(steps[i]).forEach((command) => {
-      assert(`{{js-pdf}} steps is given valid command: ${command}`, COMMANDS.includes(command));
+      assert(`{{js-pdf}} steps is given valid command: ${command}`, COMMANDS.indexOf(command) > -1);
 
       let args = steps[i][command];
       if (!isArray(args)) args = [args];
