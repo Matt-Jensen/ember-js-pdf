@@ -1,7 +1,7 @@
 /* eslint-env node */
 'use strict';
 
-const {map} = require('broccoli-stew');
+const map = require('broccoli-stew').map;
 
 module.exports = {
   name: 'ember-js-pdf',

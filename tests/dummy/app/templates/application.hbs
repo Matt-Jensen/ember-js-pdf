@@ -1,3 +1,8 @@
-<h2 id="title">Welcome to Ember</h2>
+<h2 id="title">Welcome to jsPDF </h2>
+<button {{action "addPdfAuthor" author}}>Add Author</button>
+
+{{#js-pdf steps as |pdf|}}
+  <button {{action pdf.save}}>Save PDF</button>
+{{/js-pdf}}
 
 {{outlet}}
