@@ -20,8 +20,7 @@ const JsPdfComponent = Component.extend({
    */
   filename: computed({
     get() {
-      const id = this.element && this.element.id;
-      return `${id || 'no-name'}.pdf`;
+      return `${get(this, 'elementId') || 'no-name'}.pdf`;
     },
 
     set(key, value = '') {
@@ -60,9 +59,7 @@ const JsPdfComponent = Component.extend({
    * Base64 encoding of PDF document
    * @type {String}
    */
-  src: computed('steps.[]', 'element', function() {
-    if (!this.element) return '';
-
+  src: computed('steps.[]', function() {
     const steps = get(this, 'steps');
     assert(`{{js-pdf}} requires an array of rendering steps`, isArray(steps));
 
