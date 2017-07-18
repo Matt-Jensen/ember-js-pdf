@@ -36,6 +36,11 @@ Saving PDFs:
 {{/js-pdf}}
 ```
 
+Rendering from a URL:
+```hbs
+{{js-pdf src="https://bitcoin.org/bitcoin.pdf"}}
+```
+
 ## Contributing
 
 * `git clone <repository-url>` this repository

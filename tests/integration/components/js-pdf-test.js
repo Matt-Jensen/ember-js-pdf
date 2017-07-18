@@ -35,3 +35,9 @@ test('it enforces a string with type `.pdf` as filename', function(assert) {
 
   assert.strictEqual(this.$('#pdf-filename').text().trim(), 'false.pdf');
 });
+
+test('it renders a PDF from a url set as `src`', function(assert) {
+  const url = this.set('url', 'https://bitcoin.org/bitcoin.pdf');
+  this.render(hbs`{{js-pdf src=url}}`);
+  assert.strictEqual(this.$('.ember-js-pdf__frame').attr('data'), url, 'sets the url as the `data` value of the frame');
+});
