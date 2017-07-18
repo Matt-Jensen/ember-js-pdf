@@ -1,6 +1,6 @@
 {
   "name": "ember-js-pdf",
-  "version": "0.2.3",
+  "version": "0.2.0",
   "description": "Client-side JavaScript PDF generation for Embereños.",
   "keywords": [
     "ember-addon",
