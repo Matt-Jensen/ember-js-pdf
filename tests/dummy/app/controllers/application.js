@@ -6,7 +6,7 @@ const imgData = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAIBAQEB
 
 export default Controller.extend({
   author: 'Matt-Jensen',
-
+  opts: {orientation: 'landscape'},
   steps: Ember.A([
     {setFontSize: 40},
     {text: [35, 25, 'Paranyan loves jsPDF']},

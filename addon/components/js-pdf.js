@@ -60,10 +60,11 @@ const JsPdfComponent = Component.extend({
    * @type {String}
    */
   src: computed('steps.[]', function() {
-    const steps = get(this, 'steps');
+    const steps = get(this, 'steps'),
+          opts = get(this, 'opts');
     assert(`{{js-pdf}} requires an array of rendering steps`, isArray(steps));
 
-    const doc = set(this, 'content', new jsPDF());
+    const doc = set(this, 'content', new jsPDF(opts));
     addStepsToJsPdf(doc, steps);
 
     return doc.output('dataurlstring');
