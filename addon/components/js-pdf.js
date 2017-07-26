@@ -2,7 +2,7 @@ import Component from 'ember-component';
 import layout from '../templates/components/js-pdf';
 import {assert} from 'ember-metal/utils';
 import computed from 'ember-computed';
-import get from 'ember-metal/get';
+import {default as get, getProperties} from 'ember-metal/get';
 import set from 'ember-metal/set';
 
 import COMMANDS from '../commands';
@@ -38,38 +38,83 @@ const JsPdfComponent = Component.extend({
   }),
 
   /**
-   * PDF iframe width
+   * PDF frame width
    * @type {String}
    */
   width: '100%',
 
   /**
-   * PDF iframe height
+   * PDF frame height
    * @type {String}
    */
   height: '500px',
 
   /**
+   * PDF document orientation
+   * @type {String}
+   */
+  orientation: 'p',
+
+  /**
+   * Measurement unit used
+   * @type {String}
+   */
+  unit: 'mm',
+
+  /**
+   * PDF page formats
+   * @type {String}
+   */
+  format: 'a4',
+
+  /**
+   * Whether to compress output pdf
+   * @type {Boolean}
+   */
+  compressPdf: false,
+
+  /**
    * Current object generated from new jsPDF()
    * @type {Object}
    */
-  content: null,
+  content: computed('steps.[]', 'orientation', 'unit', 'format', 'compressPdf', {
+    get() {
+      const {
+        orientation,
+        unit,
+        format,
+        compressPdf
+      } = getProperties(this, 'orientation', 'unit', 'format', 'compressPdf');
+
+      assert('{{js-pdf}} requires a valid PDF `orientation`', typeof orientation === 'string' && orientation.length);
+      assert('{{js-pdf}} requires a measurment as `unit`', typeof unit === 'string' && unit.length);
+      assert('{{js-pdf}} requires a valid page `format`', typeof format === 'string' && format.length);
+
+      return new jsPDF(orientation, unit, format, compressPdf);
+    },
+
+    set(key, value) {
+      return value;
+    }
+  }),
 
   /**
    * Base64 encoding of PDF document
    * @type {String}
    */
-  src: computed('steps.[]', function() {
-    const steps = get(this, 'steps'),
-          opts = get(this, 'opts');
-    assert(`{{js-pdf}} requires an array of rendering steps`, isArray(steps));
+  src: computed('steps.[]', 'orientation', 'unit', 'format', 'compressPdf', function() {
+    const jsPdf = get(this, 'content');
+    const steps = get(this, 'steps');
 
-    const doc = set(this, 'content', new jsPDF(opts));
-    addStepsToJsPdf(doc, steps);
+    assert('{{js-pdf}} requires an array of rendering steps', isArray(steps));
+    addStepsToJsPdf(jsPdf, steps);
 
-    return doc.output('dataurlstring');
+    return jsPdf.output('dataurlstring');
   }),
 
+  /**
+   * Trigger garbage collection of jsPDF instance
+   */
   willDestroyElement() {
     this._super(...arguments);
     set(this, 'content', null);
