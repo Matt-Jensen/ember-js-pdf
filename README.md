@@ -41,6 +41,15 @@ Rendering from a URL:
 {{js-pdf src="https://bitcoin.org/bitcoin.pdf"}}
 ```
 
+## Misc Options
+
+| Property    | Type    | Default | Available                 |
+| ----------- | ------- | ------- | ------------------------- |
+| orientation | String  | p       | portrait, landscape, p, l |
+| unit        | String  | mm      | pt, mm, cm, in            |
+| format      | String  | a4      | a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, dl, letter, government-letter, legal, junior-legal, ledger, tabloid, credit-card |
+| compressPdf | Boolean | false   | true, false               |
+
 ## Contributing
 
 * `git clone <repository-url>` this repository

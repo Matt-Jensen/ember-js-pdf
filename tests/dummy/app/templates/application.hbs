@@ -1,10 +1,12 @@
 <h2 id="title">Welcome to jsPDF </h2>
 <button {{action "addPdfAuthor" author}}>Add Author</button>
 
+<h3>With save button</h3>
 {{#js-pdf steps as |pdf|}}
   <button {{action pdf.save}}>Save PDF</button>
 {{/js-pdf}}
 
+<h3>Using src</h3>
 {{js-pdf src="https://bitcoin.org/bitcoin.pdf"}}
 
 {{outlet}}

@@ -3,6 +3,12 @@ import {moduleForComponent, test} from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import run from 'ember-runloop';
 
+const PAGE_SIZES = {
+  a0: {
+    pt: {width: 2383.94, height: 3370.39}
+  }
+};
+
 moduleForComponent('js-pdf', 'Integration | Component | js pdf', {
   integration: true
 });
@@ -40,4 +46,31 @@ test('it renders a PDF from a url set as `src`', function(assert) {
   const url = this.set('url', 'https://bitcoin.org/bitcoin.pdf');
   this.render(hbs`{{js-pdf src=url}}`);
   assert.strictEqual(this.$('.ember-js-pdf__frame').attr('data'), url, 'sets the url as the `data` value of the frame');
+});
+
+test('it creates PDF with the configured page format and measurment unit', function(assert) {
+  this.set('steps', []);
+
+  this.render(hbs`{{#js-pdf steps unit="pt" format="a0" as |pdf|}}
+    <div id="pdf-page-width">{{pdf.content.internal.pageSize.width}}</div>
+    <div id="pdf-page-height">{{pdf.content.internal.pageSize.height}}</div>
+  {{/js-pdf}}`);
+
+  assert.equal(this.$('#pdf-page-width').text().trim(), PAGE_SIZES.a0.pt.width);
+  assert.equal(this.$('#pdf-page-height').text().trim(), PAGE_SIZES.a0.pt.height);
+});
+
+test('it renders a new PDF when orientation is updated', function(assert) {
+  this.set('steps', Ember.A([{text: [35, 25, 'Test PDF']}]));
+  this.set('orientation', 'portrait');
+  this.render(hbs`{{js-pdf steps orientation=orientation}}`);
+
+  const initialBase64Steps = this.$('object').attr('data');
+
+  run(() => this.set('orientation', 'landscape'));
+
+  run(() => {
+    const updatedBase64Steps = this.$('object').attr('data');
+    assert.notEqual(initialBase64Steps, updatedBase64Steps, 'orientation was updated');
+  });
 });
