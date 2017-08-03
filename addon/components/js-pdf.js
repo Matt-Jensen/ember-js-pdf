@@ -38,6 +38,12 @@ const JsPdfComponent = Component.extend({
   }),
 
   /**
+   * Is PDF document rendered
+   * @type {Boolean}
+   */
+  showPdf: true,
+
+  /**
    * PDF frame width
    * @type {String}
    */

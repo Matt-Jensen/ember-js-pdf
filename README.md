@@ -41,6 +41,14 @@ Rendering from a URL:
 {{js-pdf src="https://bitcoin.org/bitcoin.pdf"}}
 ```
 
+Toggling PDF visibility:
+```hbs
+{{#js-pdf showPdf=false as |pdf|}}
+  <h1>{{pdf.filename}} is visible</h1>
+  {{!-- PDF Not visible --}}
+{{/js-pdf}}
+```
+
 ## Misc Options
 
 | Property    | Type    | Default | Available                 |
