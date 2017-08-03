@@ -74,3 +74,18 @@ test('it renders a new PDF when orientation is updated', function(assert) {
     assert.notEqual(initialBase64Steps, updatedBase64Steps, 'orientation was updated');
   });
 });
+
+test('it only renders PDF frame when `showPdf` is true', function(assert) {
+  assert.expect(2);
+
+  this.set('showPdf', false);
+  this.set('steps', []);
+
+  this.render(hbs`{{js-pdf steps showPdf=showPdf}}`);
+  assert.notOk(this.$('.ember-js-pdf__frame').length);
+
+  run(() => {
+    this.set('showPdf', true);
+    assert.ok(this.$('.ember-js-pdf__frame').length);
+  });
+});

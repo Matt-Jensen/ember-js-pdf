@@ -3,4 +3,6 @@
   content=content
   save=(action "onSave"))}}
 
-<object class="ember-js-pdf__frame" width={{width}} height={{height}} data={{src}}></object>
+{{#if showPdf}}
+  <object class="ember-js-pdf__frame" width={{width}} height={{height}} data={{src}}></object>
+{{/if}}
