@@ -19,7 +19,7 @@ Render a PDF from an Array of steps:
 
 Where:
 ```js
-export Default Controller.extend({
+export default Controller.extend({
   steps: [
     {setFontSize: 40},
     {text: [35, 25, 'Tomsters loves jsPDF']}
