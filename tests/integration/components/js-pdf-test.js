@@ -1,7 +1,7 @@
-import Ember from 'ember';
-import {moduleForComponent, test} from 'ember-qunit';
+import { A } from '@ember/array';
+import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import run from 'ember-runloop';
+import { run } from '@ember/runloop';
 
 const PAGE_SIZES = {
   a0: {
@@ -20,7 +20,7 @@ test('it renders a base64 PDF from a list of steps', function(assert) {
 });
 
 test('it renders a new PDF when steps are added', function(assert) {
-  const steps = this.set('steps', Ember.A([{text: [35, 25, 'Test PDF']}]));
+  const steps = this.set('steps', A([{text: [35, 25, 'Test PDF']}]));
   this.render(hbs`{{js-pdf steps}}`);
 
   const initialBase64Steps = this.$('object').attr('data');
@@ -61,7 +61,7 @@ test('it creates PDF with the configured page format and measurment unit', funct
 });
 
 test('it renders a new PDF when orientation is updated', function(assert) {
-  this.set('steps', Ember.A([{text: [35, 25, 'Test PDF']}]));
+  this.set('steps', A([{text: [35, 25, 'Test PDF']}]));
   this.set('orientation', 'portrait');
   this.render(hbs`{{js-pdf steps orientation=orientation}}`);
 

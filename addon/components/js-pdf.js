@@ -1,9 +1,7 @@
-import Component from 'ember-component';
+import Component from '@ember/component';
+import { assert } from '@ember/debug';
+import { computed, get, set, getProperties } from '@ember/object';
 import layout from '../templates/components/js-pdf';
-import {assert} from 'ember-metal/utils';
-import computed from 'ember-computed';
-import {default as get, getProperties} from 'ember-metal/get';
-import set from 'ember-metal/set';
 
 import COMMANDS from '../commands';
 
