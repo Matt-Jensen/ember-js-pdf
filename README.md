@@ -62,7 +62,7 @@ Toggling PDF visibility:
 
 * `git clone <repository-url>` this repository
 * `cd ember-js-pdf`
-* `npm install`
+* `yarn`
 
 ## Running
 
