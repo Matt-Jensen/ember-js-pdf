@@ -89,3 +89,19 @@ test('it only renders PDF frame when `showPdf` is true', function(assert) {
     assert.ok(this.$('.ember-js-pdf__frame').length);
   });
 });
+
+test('it invokes rendering steps on jsPDF instance when `showPdf` is false', function(assert) {
+  this.set('steps', [{ text: ['test']}]);
+  this.set('content', {
+    output: () => '',
+    save: () => {},
+    text() {
+      assert.ok(true, 'invoked `text` rendering step on pdf instance');
+    }
+  });
+
+  this.render(hbs`{{#js-pdf steps content=content showPdf=false as |pdf|}}
+    <button id="save" {{action pdf.save}}></button>
+  {{/js-pdf}}`);
+  this.$('#save').click();
+});

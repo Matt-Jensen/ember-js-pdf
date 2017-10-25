@@ -129,9 +129,10 @@ const JsPdfComponent = Component.extend({
       const filename = get(this, 'filename');
       const action = get(this, 'onSave');
       const jsPdfInstance = get(this, 'content');
+      const src = get(this, 'src'); // ensure src computes
 
       if (action) {
-        action(filename, get(this, 'src'));
+        action(filename, src);
       }
 
       if (jsPdfInstance) {
