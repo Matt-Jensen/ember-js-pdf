@@ -113,7 +113,7 @@ const JsPdfComponent = Component.extend({
     assert('{{js-pdf}} requires an array of rendering steps', isArray(steps));
     addStepsToJsPdf(jsPdf, steps);
 
-    return jsPdf.output('dataurlstring');
+    return jsPdf.output('bloburl');
   }),
 
   /**
