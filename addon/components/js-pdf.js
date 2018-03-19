@@ -3,15 +3,32 @@ import { assert } from '@ember/debug';
 import { computed, get, set, getProperties } from '@ember/object';
 import layout from '../templates/components/js-pdf';
 
+
 import COMMANDS from '../commands';
 
-const {keys} = Object;
-const {isArray} = Array;
+const { keys } = Object;
+const { isArray } = Array;
 
 const JsPdfComponent = Component.extend({
   layout,
   classNames: ['ember-js-pdf'],
-
+  init(...args) {
+    this._super(...args);
+    this.loadPlugins();
+  },
+  plugins: {},
+  loadPlugins() {
+    let pluginCommands = [];
+    const plugins = get(this,'plugins');
+    for (var pluginName in plugins) {
+      pluginCommands.push(pluginName);
+      const pluginFunction = plugins[pluginName];
+      if(typeof pluginFunction === 'function'){
+        pluginFunction();
+      }
+    }
+    set(this, 'commands', COMMANDS.concat(pluginCommands))
+  },
   /**
    * Saved filename of generated PDF
    * @type {String}
@@ -111,11 +128,29 @@ const JsPdfComponent = Component.extend({
     const steps = get(this, 'steps');
 
     assert('{{js-pdf}} requires an array of rendering steps', isArray(steps));
-    addStepsToJsPdf(jsPdf, steps);
+    this.addStepsToJsPdf(jsPdf, steps);
 
     return jsPdf.output('bloburl');
   }),
+  /**
+   * Apply PDF rendering steps to a jsPDF Object
+   * @param {Object} pdf        pdf generated from new jsPDF()
+   * @param {Array}  steps      List of steps to render PDF
+   *                            ie: [{text: [35, 25, 'pdf text'] }]
+   */
+  addStepsToJsPdf(pdf, steps = []) {
+    const commands = get(this, 'commands');
+    for (let i = 0; i < steps.length; i++) {
+      keys(steps[i]).forEach((command) => {
+        assert(`{{js-pdf}} steps is given valid command: ${command}`, commands.indexOf(command) > -1);
 
+        let args = steps[i][command];
+        if (!isArray(args)) args = [args];
+
+        pdf[command](...args);
+      });
+    }
+  },
   /**
    * Trigger garbage collection of jsPDF instance
    */
@@ -145,22 +180,3 @@ const JsPdfComponent = Component.extend({
 export default JsPdfComponent.reopenClass({
   positionalParams: ['steps']
 });
-
-/**
- * Apply PDF rendering steps to a jsPDF Object
- * @param {Object} pdf        pdf generated from new jsPDF()
- * @param {Array}  steps      List of steps to render PDF
- *                            ie: [{text: [35, 25, 'pdf text'] }]
- */
-function addStepsToJsPdf(pdf, steps = []) {
-  for (let i = 0; i < steps.length; i++) {
-    keys(steps[i]).forEach((command) => {
-      assert(`{{js-pdf}} steps is given valid command: ${command}`, COMMANDS.indexOf(command) > -1);
-
-      let args = steps[i][command];
-      if (!isArray(args)) args = [args];
-
-      pdf[command](...args);
-    });
-  }
-}
