@@ -49,6 +49,58 @@ Toggling PDF visibility:
 {{/js-pdf}}
 ```
 
+Custom plugins:
+```js
+export default Controller.extend({
+  plugins: computed(() => {
+    return {
+      writeText: () => {
+      /* eslint-disable */
+      (function (api, $) {
+
+        api.writeText = function (x, y, text, options) {
+          options = options || {};
+          console.log(options);
+          const defaults = {
+            align: 'left',
+            width: this.internal.pageSize.width,
+          };
+
+          const settings = $.extend({}, defaults, options);
+
+          // Get current font size
+          const fontSize = this.internal.getFontSize();
+
+          // Get the actual text's width
+          // You multiply the unit width of your string by your font size and divide
+          // by the internal scale factor. The division is necessary
+          // for the case where you use units other than 'pt' in the constructor
+          // of jsPDF.
+
+          const txtWidth = this.getStringUnitWidth(text) * fontSize / this.internal.scaleFactor;
+
+          if (settings.align === 'center') x += (settings.width - txtWidth) / 2;
+          else if (settings.align === 'right') x += (settings.width - txtWidth);
+
+          // default is 'left' alignment
+          this.text(text, x, y);
+        };
+      }(jsPDF.API, _$));
+      /* eslint-enable */
+      },
+    };
+  }),
+  steps: [
+    {writeText: [35, 50, 'Look Ma A Custom Plugin', { align: 'center' }]},
+  ]
+});
+```
+```hbs
+{{#js-pdf plugins=plugins teps as |pdf|}}
+  <button {{action pdf.save}}>Download PDF</button>
+{{/js-pdf}}
+```
+
 ## Misc Options
 
 | Property    | Type    | Default | Available                 |
